@@ -1,0 +1,95 @@
+syntax = "proto3";
+//python -m grpc_tools.protoc --python_out=. --grpc_python_out=. -I. blockchain.proto
+//blockchain service and the function definition
+service BlockChain {
+  rpc AddBlock(AddBlockRequest) returns (AddBlockResponse) {}
+  rpc QueryBlockchain(QueryBlockchainRequest) returns (QueryBlockchainResponse) {}
+  rpc QueryBlock(QueryBlockRequest) returns (QueryBlockResponse) {}
+
+  rpc AddTransaction(AddTransactionRequest) returns (AddTransactionResponse) {}
+
+  rpc AddNeighbor(AddNeighborRequest) returns(AddNeighborResponse){}
+
+  rpc Broadcast(BroadcastRequest) returns(BroadcastResponse){}
+}
+// node
+message BroadcastRequest {
+  repeated Block blocks= 1;
+}
+message BroadcastResponse {
+  string message = 1;
+}
+
+message AddNeighborRequest {
+  string message = 1;
+  int32 port = 2;
+}
+message AddNeighborResponse {
+  string message = 1;
+
+}
+
+// Transaction
+message AddTransactionRequest {
+  Transaction transaction = 1;
+}
+message AddTransactionResponse {
+  string message = 1;
+}
+
+//request message definition
+//expectHash used to guess the target hash
+message AddBlockRequest {
+  string transaction = 1;
+  int32 expectHash = 2;
+}
+//response message definition
+//hash means the address of the new block
+message AddBlockResponse {
+  string hash = 1;
+}
+
+//block transaction structure definition
+//the block definition is same as bc_struct_def.py
+//        self.Index = 0
+//        self.Timestamp = int(time.time())
+//        self.Nonce = 0
+//        self.Hash = ''
+//        self.PrevBlockHash = ''
+//        self.Transaction = []
+message Block {
+  int32 index = 1;
+  int32 timestamp = 2;
+  int32 nonce = 3;
+  string hash = 4;
+  string prevBlockHash = 5;
+  string merkle_tree = 6;
+  repeated Transaction transaction = 7;
+}
+
+message Transaction{
+  string sender = 1;
+  string receiver = 2;
+  int32 amount = 3;
+  string data = 4;
+}
+
+//request message definition
+message QueryBlockchainRequest {
+  string message = 1;
+}
+
+//response message definition
+message QueryBlockchainResponse {
+  repeated Block blocks= 1;
+}
+
+//For Step 3
+message QueryBlockRequest {
+  string message = 1;
+}
+
+message QueryBlockResponse {
+  Block block = 1;
+}
+
