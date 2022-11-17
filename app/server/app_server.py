@@ -119,13 +119,15 @@ def queryRecordName():
                         for tx in block.transaction:
                             txjson = eval(tx.data)
                             if txjson['RecordId'] == str(info):
-                                record.append(txjson)
+                                if txjson not in record:
+                                    record.append(txjson)
                 elif method == '1':
                     for block in response.blocks:
                         for tx in block.transaction:
                             txjson = eval(tx.data)
                             if txjson['PatientName'] == str(info):
-                                record.append(txjson)
+                                if txjson not in record:
+                                    record.append(txjson)
     if len(record) != 0:
         response = {
             "message":"successful",
