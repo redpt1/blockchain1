@@ -15,13 +15,17 @@
           <el-form-item label="住院时间" >
             <el-col :span="11">
               <el-form-item label="" prop="In_time" >
-              <el-date-picker type="date" placeholder="选择日期" v-model="form.In_time" style="width: 100%;" ></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" v-model="form.In_time" style="width: 100%;"
+                              format="yyyy-MM-dd"
+                              value-format="yyyy-MM-dd"
+              ></el-date-picker>
                 </el-form-item>
             </el-col>
             <el-col class="line" :span="2">-</el-col>
             <el-col :span="11">
               <el-form-item label="" prop="Out_time" >
-              <el-date-picker type="date" placeholder="选择日期" v-model="form.Out_time" style="width: 100%;" ></el-date-picker>
+              <el-date-picker type="date" placeholder="选择日期" v-model="form.Out_time" style="width: 100%;" format="yyyy-MM-dd"
+                              value-format="yyyy-MM-dd"></el-date-picker>
               </el-form-item>
             </el-col>
           </el-form-item>
@@ -112,6 +116,7 @@
 
 <script>
 export default {
+
   data() {
     return {
       form: {
@@ -185,6 +190,7 @@ export default {
   methods: {
     onSubmit() {
       this.$refs.formRules.validate((valid) => {
+
         const startDate = this.form.In_time
         const endDate = this.form.Out_time
         const startTime = new Date(startDate).getTime()
