@@ -226,21 +226,22 @@ def sendTX():
             try:
                 tx = blockchain_pb2.Transaction(sender=sender, receiver=receiver,
                                                 amount=int(amount), data=data)
-                response = stub.AddTransaction(blockchain_pb2.AddTransactionRequest(transaction=tx))
+                resp = stub.AddTransaction(blockchain_pb2.AddTransactionRequest(transaction=tx))
             except Exception:
                 #   QMessageBox.about(self, 'error', 'the port can not connect')
                 continue
             else:
-                if server.wallet - amount >= 0:
-                    print(response.message)
-                    response = {
-                        'message': 'success send the record',
-                        'recordId': id
-                    }
-                    server.wallet -= amount  # 扣费
+                if resp.message == 'OK':
+                    if server.wallet - amount >= 0:
+                        # print(response.message)
+                        response = {
+                            'message': 'success send the record',
+                            'recordId': id
+                        }
+                        server.wallet -= amount  # 扣费
                 else:
                     response = {
-                        "message": "fail!",
+                            "message": "fail!",
                     }
     return jsonify(response), 200
 
